@@ -18,6 +18,7 @@ package io.smallrye.restclient.app;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
@@ -25,6 +26,7 @@ import javax.ws.rs.WebApplicationException;
 @Path("/")
 public class HelloResource {
 
+    public static final String HELLO_WITH_PARAM_FMT = "Hello %s!";
     @Inject
     private Counter counter;
 
@@ -60,5 +62,11 @@ public class HelloResource {
             throw new WebApplicationException("End latch not counted down", 500);
         }
         return "OK";
+    }
+
+    @GET
+    @Path("/with-param/{name}")
+    public String hello(@PathParam("name") String name) {
+        return String.format(HELLO_WITH_PARAM_FMT, name);
     }
 }
